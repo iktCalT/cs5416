@@ -69,7 +69,7 @@ Use `cargo doc --open` to generate a document of all dependencies used in your p
 
   After match find first matching arm, it won't look at following arms.
 
-- Shadowing: *Shadowing lets us reuse the guess variable name rather than forcing us to create two unique variables.*
+- Shadowing: *Shadowing lets us reuse the guess variable name rather than forcing us to create two unique variables.* Read [Chap 3 Shadowing](https://rust-book.cs.brown.edu/ch03-01-variables-and-mutability.html#shadowing)
 
 - trim: It deletes whitespaces and `\n`, and `\r\n`.
 
@@ -81,9 +81,81 @@ Use `cargo doc --open` to generate a document of all dependencies used in your p
 
 ### Types in Rust
 
+*Keep in mind that Rust is a statically typed language, which means that it must know the types of all variables at compile time.*
+
 - [Rust book](https://rust-book.cs.brown.edu/ch03-02-data-types.html)
 - [w3schools](https://www.w3schools.com/rust/rust_data_types.php)
 
+;[Integer Overflow](https://rust-book.cs.brown.edu/ch03-02-data-types.html#integer-overflow)
+
+Default type for integer is `i32`, default type of float is `f64`
+
+Be careful about `char`, read [Chap 3](https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-character-type)
+
+[Tuples and destructing](https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-tuple-type)
+
+### Statements and expressions
+
+The following statements are copied from [the Rust book](https://rust-book.cs.brown.edu/ch03-03-how-functions-work.html#statements-and-expressions)
+
+- *Statements are instructions that perform some action and do not return a value.*
+- *Expressions evaluate to a resultant value.* *Expressions do not include ending semicolons*
+- *If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value.*
+
+*You can return early from a function by using the return keyword and specifying a value, but most functions return the last expression implicitly.*
+
+### Control flow
+
+[The Rust book](https://rust-book.cs.brown.edu/ch03-05-control-flow.html)
+
+#### If
+
+Difference between Rust and C++
+
+- The condition in Rust is not in braces '()', for example, `if x > 0 {}`.
+- The condition must be bool. `let x = 3; if x {}` is invalid.
+
+If your code has too many `else if`, consider refactor with `match`.
+
+If one arm of `if {} else {}` returns (is a expression), then the other arm must return a value with **same type**. Because we may assign its value to variable (even if we don't assign, they still needs to be the same), `let x = if true {6} else {6};`. If two arms may return different types, then compiler don't know `x`'s type during compile time, this is forbidden in Rust.
+
+Remember, **the type of all variables must be known during compile time.**
+
+```rust
+// This is valid, although x is immutable, 
+// but Rust compiler knows it is assigned only once.
+fn main() {
+    let x;
+    if true {
+      x = 1;
+    } else {
+      x = 2;
+    }
+    println!("{x}");
+}
+```
+
+#### loop, while, and for
+
+`loop {}` is an infinite loop. Exit it either by `Ctrl+C` or `break;`. `while` is conditional loop.
+
+`break` can also return values from a loop. e.g.
+
+```rust
+fn main() {
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2; // Or break counter * 2 (without ';')
+        }
+    };
+    println!("The result is {result}"); // The result is 20
+}
+```
+
+You can break specific loop, read [the Rust book, Disambiguating with Loop Labels](https://rust-book.cs.brown.edu/ch03-05-control-flow.html#disambiguating-with-loop-labels)
+
 ## My thoughts
 
-Why the default type of Rust is immutable, you have to explicitly add a `mut` to make it mutable? -> I think it's because in C++, we should use `const` (similar to immutable) everywhere as long as possible. So, it is better to set the default type `const` (immutable).
+Why the default type of Rust is immutable, you have to explicitly add a `mut` to make it mutable? -> I think it's because in C++, we should use `const` (similar to immutable) everywhere as long as possible. So, it is better to set the default type `const` in C++ (immutable in Rust). Notice there is [difference between constant and immutable](https://rust-book.cs.brown.edu/ch03-01-variables-and-mutability.html#declaring-constants). The Rust constants are more like C++ micros.

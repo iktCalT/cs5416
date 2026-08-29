@@ -92,7 +92,24 @@ Default type for integer is `i32`, default type of float is `f64`
 
 Be careful about `char`, read [Chap 3](https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-character-type)
 
-[Tuples and destructing](https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-tuple-type)
+### Compound types
+
+#### Tuples
+
+Elements in tuples can have different types.
+
+- Tuples: `let t: (i32, f64, u8) = (500, 6.4, 1);` [Tuples and destructing](https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-tuple-type)
+- Tuple destructuring: `let (x, y, z) = t;`
+- Tuple access: `t.0`, `t.1`
+- Tuples without any values are called "unit". Like `let unit: () = ();`, see, its type is `()`, and itself is also `()`.
+
+#### Arrays
+
+Elements in an array must be the same type.
+
+- Array: `let a: [i32; 5] = [1, 2, 3, 4, 5];`
+- Array constructor: `let a: [i32; 5] = [3; 5];`. a is `[3,3,3,3,3]`
+- Array access: `a[0]`
 
 ### Statements and expressions
 
